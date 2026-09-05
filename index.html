@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title data-i18n="pageTitle">
+    STYX TC
+  </title>
+
+
+  <style>
+
+    /* ==============================
+       RESET
+    ============================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      background: #f7f8fc;
+      color: #17181c;
+
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+
+    /* ==============================
+       NAVBAR
+    ============================== */
+
+    .navbar {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0 clamp(18px, 6vw, 100px);
+
+      background: rgba(255, 255, 255, 0.88);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+      z-index: 9999;
+    }
+
+
+    /* ==============================
+       LOGO
+    ============================== */
+
+    .logo {
+      width: 62px;
+      height: 62px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: auto;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.25s,
+        opacity 0.25s;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: block;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      opacity: 0.85;
+    }
+
+
+    /* ==============================
+       NAVIGATION
+    ============================== */
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+
+      gap: 3px;
+
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      color: #555;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      transition: 0.25s;
+    }
+
+    .nav-links a:hover {
+      color: #635bff;
+      background: #efeeff;
+    }
+
+
+    /* ==============================
+       LANGUAGE SWITCHER
+    ============================== */
+
+    .language-switcher {
+      display: flex;
+      align-items: center;
+
+      padding: 4px;
+
+      margin-left: 8px;
+
+      border-radius: 12px;
+
+      background: #f1f1f5;
+    }
+
+    .language-switcher button {
+      border: none;
+
+      padding: 7px 10px;
+
+      border-radius: 9px;
+
+      background: transparent;
+
+      color: #777;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.25s;
+    }
+
+    .language-switcher button:hover {
+      color: #635bff;
+    }
+
+    .language-switcher button.active {
+      background: white;
+
+      color: #635bff;
+
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* ==============================
+       MOBILE BUTTON
+    ============================== */
+
+    .menu-button {
+      display: none;
+
+      width: 42px;
+      height: 42px;
+
+      border: none;
+      border-radius: 12px;
+
+      background: #f1f1f5;
+
+      cursor: pointer;
+
+      font-size: 22px;
+
+      color: #222;
+    }
+
+
+    /* ==============================
+       MOBILE MENU
+    ============================== */
+
+    .mobile-menu {
+      display: none;
+
+      position: fixed;
+
+      top: 65px;
+      left: 0;
+
+      width: 100%;
+
+      padding: 15px 20px 20px;
+
+      background: rgba(255, 255, 255, 0.97);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid #eee;
+
+      z-index: 9998;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+
+      padding: 14px 15px;
+
+      margin-bottom: 5px;
+
+      border-radius: 12px;
+
+      color: #333;
+
+      font-weight: 500;
+
+      transition: 0.2s;
+    }
+
+    .mobile-menu a:hover {
+      background: #f1f0ff;
+      color: #635bff;
+    }
+
+
+    /* ==============================
+       MOBILE LANGUAGE
+    ============================== */
+
+    .mobile-language {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-top: 12px;
+
+      padding-top: 12px;
+
+      border-top: 1px solid #eee;
+    }
+
+    .mobile-language button {
+      flex: 1;
+
+      padding: 11px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      background: #f3f3f6;
+
+      color: #777;
+
+      cursor: pointer;
+
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .mobile-language button.active {
+      background: #ebeaff;
+
+      color: #635bff;
+    }
+
+
+    /* ==============================
+       HERO
+    ============================== */
+
+    .hero {
+      width: 100%;
+      min-height: 100svh;
+
+      padding:
+        clamp(140px, 18vh, 200px)
+        clamp(20px, 7vw, 100px)
+        100px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+
+      background:
+
+        radial-gradient(
+          circle at 15% 25%,
+          rgba(99, 91, 255, 0.16),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at 85% 70%,
+          rgba(0, 200, 255, 0.13),
+          transparent 30%
+        ),
+
+        #f7f8fc;
+    }
+
+    .hero-content {
+      width: 100%;
+      max-width: 900px;
+    }
+
+
+    /* ==============================
+       HERO TAG
+    ============================== */
+
+    .hero-tag {
+      display: inline-block;
+
+      padding: 7px 15px;
+
+      margin-bottom: 25px;
+
+      border-radius: 50px;
+
+      background: #ebeaff;
+
+      color: #635bff;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+
+    /* ==============================
+       HERO TITLE
+    ============================== */
+
+    .hero h1 {
+      font-size:
+        clamp(48px, 7vw, 90px);
+
+      line-height: 1.02;
+
+      letter-spacing:
+        clamp(-4px, -0.3vw, -1px);
+
+      margin-bottom: 28px;
+    }
+
+    .hero h1 span {
+      color: #635bff;
+    }
+
+
+    /* ==============================
+       HERO DESCRIPTION
+    ============================== */
+
+    .hero p {
+      width: 100%;
+      max-width: 650px;
+
+      margin: 0 auto 35px;
+
+      color: #6d6d75;
+
+      font-size:
+        clamp(16px, 2vw, 19px);
+
+      line-height: 1.7;
+    }
+
+
+    /* ==============================
+       PRIMARY BUTTON
+    ============================== */
+
+    .primary-button {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 50px;
+
+      padding: 0 25px;
+
+      border-radius: 14px;
+
+      background: #17181c;
+
+      color: white;
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      transition: 0.25s;
+    }
+
+    .primary-button:hover {
+      background: #635bff;
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 15px 35px
+        rgba(99, 91, 255, 0.25);
+    }
+
+
+    /* ==============================
+       FEATURES
+    ============================== */
+
+    .features {
+      width: 100%;
+
+      padding:
+        clamp(80px, 10vw, 130px)
+        clamp(20px, 7vw, 100px);
+
+      background: white;
+    }
+
+
+    .section-title {
+      width: 100%;
+      max-width: 700px;
+
+      margin: 0 auto 55px;
+
+      text-align: center;
+    }
+
+    .section-title h2 {
+      font-size:
+        clamp(36px, 5vw, 52px);
+
+      line-height: 1.1;
+
+      letter-spacing: -2px;
+
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: #777;
+
+      line-height: 1.6;
+    }
+
+
+    /* ==============================
+       FEATURE GRID
+    ============================== */
+
+    .feature-grid {
+      width: 100%;
+      max-width: 1300px;
+
+      margin: auto;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+
+    /* ==============================
+       FEATURE CARD
+    ============================== */
+
+    .feature-card {
+      min-width: 0;
+      min-height: 270px;
+
+      padding:
+        clamp(22px, 3vw, 32px);
+
+      display: flex;
+      flex-direction: column;
+
+      border-radius: 24px;
+
+      background: #f7f7fa;
+
+      border: 1px solid #ededf2;
+
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s,
+        background 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+
+      background: white;
+
+      box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* ==============================
+       FEATURE ICON
+    ============================== */
+
+    .feature-icon {
+      width: 55px;
+      height: 55px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 25px;
+
+      border-radius: 16px;
+
+      background: #ebeaff;
+
+      font-size: 25px;
+    }
+
+
+    .feature-card h3 {
+      margin-bottom: 10px;
+
+      font-size: 21px;
+    }
+
+    .feature-card p {
+      color: #777;
+
+      font-size: 14px;
+
+      line-height: 1.7;
+    }
+
+
+    .card-link {
+      margin-top: auto;
+
+      padding-top: 20px;
+
+      color: #635bff;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+
+    /* ==============================
+       SHOWCASE
+    ============================== */
+
+    .showcase {
+      width: 100%;
+
+      padding:
+        clamp(80px, 10vw, 130px)
+        clamp(20px, 7vw, 100px);
+
+      background: #111216;
+
+      color: white;
+    }
+
+    .showcase-container {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: auto;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      gap:
+        clamp(40px, 8vw, 100px);
+
+      align-items: center;
+    }
+
+
+    .showcase h2 {
+      font-size:
+        clamp(40px, 6vw, 65px);
+
+      line-height: 1.05;
+
+      letter-spacing: -3px;
+
+      margin-bottom: 25px;
+    }
+
+    .showcase h2 span {
+      color: #8c85ff;
+    }
+
+    .showcase p {
+      max-width: 520px;
+
+      margin-bottom: 30px;
+
+      color: #aaa;
+
+      line-height: 1.7;
+    }
+
+
+    /* ==============================
+       DISCORD BUTTON
+    ============================== */
+
+    .showcase-button {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 48px;
+
+      padding: 0 22px;
+
+      border-radius: 12px;
+
+      background: white;
+
+      color: #111;
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      transition: 0.25s;
+    }
+
+    .showcase-button:hover {
+      background: #8c85ff;
+
+      color: white;
+
+      transform: translateY(-2px);
+    }
+
+
+    /* ==============================
+       VISUAL
+    ============================== */
+
+    .visual {
+      width: 100%;
+
+      aspect-ratio: 1 / 0.85;
+
+      border-radius: 30px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #635bff,
+          #00c6ff
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(99, 91, 255, 0.25);
+    }
+
+    .visual-inner {
+      width: 70%;
+      height: 70%;
+
+      border-radius: 24px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(255, 255, 255, 0.14);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.3);
+
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      font-size:
+        clamp(45px, 7vw, 70px);
+    }
+
+
+    /* ==============================
+       CTA
+    ============================== */
+
+    .cta {
+      width: 100%;
+
+      padding:
+        clamp(80px, 10vw, 130px)
+        20px;
+
+      text-align: center;
+
+      background: #f7f8fc;
+    }
+
+    .cta h2 {
+      font-size:
+        clamp(36px, 5vw, 55px);
+
+      letter-spacing: -2px;
+
+      margin-bottom: 15px;
+    }
+
+    .cta p {
+      margin-bottom: 30px;
+
+      color: #777;
+    }
+
+
+    /* ==============================
+       FOOTER
+    ============================== */
+
+    footer {
+      width: 100%;
+
+      padding:
+        30px
+        clamp(20px, 7vw, 100px);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      background: white;
+
+      border-top: 1px solid #eee;
+
+      color: #888;
+
+      font-size: 14px;
+    }
+
+
+    .footer-logo {
+      width: 50px;
+      height: 50px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+    }
+
+
+    /* ==============================
+       TABLET
+    ============================== */
+
+    @media (max-width: 1200px) {
+
+      .feature-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+    }
+
+
+    @media (max-width: 1000px) {
+
+      .nav-links a {
+        padding: 9px 9px;
+
+        font-size: 13px;
+      }
+
+      .language-switcher {
+        margin-left: 4px;
+      }
+
+      .feature-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .showcase-container {
+        gap: 50px;
+      }
+
+    }
+
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 700px) {
+
+      .navbar {
+        height: 65px;
+
+        padding: 0 18px;
+      }
+
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      .nav-right {
+        display: none;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+
+      .hero {
+        min-height: 100svh;
+
+        padding:
+          130px
+          20px
+          80px;
+      }
+
+      .hero-tag {
+        font-size: 12px;
+      }
+
+      .hero h1 {
+        font-size:
+          clamp(44px, 13vw, 65px);
+
+        letter-spacing: -3px;
+      }
+
+
+      .features {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+      }
+
+      .feature-card {
+        min-height: 230px;
+      }
+
+
+      .showcase {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .showcase-container {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase h2 {
+        letter-spacing: -2px;
+      }
+
+      .visual {
+        aspect-ratio: 1 / 0.8;
+      }
+
+
+      footer {
+        flex-direction: column;
+
+        gap: 10px;
+
+        text-align: center;
+      }
+
+    }
+
+
+    /* ==============================
+       SMALL PHONE
+    ============================== */
+
+    @media (max-width: 400px) {
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .logo {
+        width: 46px;
+        height: 46px;
+      }
+
+      .feature-card {
+        padding: 22px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body id="home">
+
+
+  <!-- ==============================
+       NAVBAR
+  ============================== -->
+
+  <header class="navbar">
+
+
+    <!-- LOGO -->
+
+    <a
+      href="index.html"
+      class="logo"
+      aria-label="Home"
+    >
+
+      <img
+        src="STYX.png"
+        alt="STYX"
+      >
+
+    </a>
+
+
+    <!-- DESKTOP NAV -->
+
+    <div class="nav-right">
+
+      <nav>
+
+        <ul class="nav-links">
+
+          <li>
+            <a
+              href="members.html"
+              data-i18n="people"
+            >
+              人员
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="exchange.html"
+              data-i18n="exchange"
+            >
+              换汇
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="games.html"
+              data-i18n="games"
+            >
+              游戏
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="social.html"
+              data-i18n="social"
+            >
+              社交软件
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="other.html"
+              data-i18n="other"
+            >
+              其他
+            </a>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+      <!-- LANGUAGE -->
+
+      <div class="language-switcher">
+
+        <button
+          id="zhButton"
+          onclick="setLanguage('zh')"
+        >
+          中
+        </button>
+
+        <button
+          id="enButton"
+          onclick="setLanguage('en')"
+        >
+          EN
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MOBILE BUTTON -->
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="打开菜单"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+  </header>
+
+
+  <!-- ==============================
+       MOBILE MENU
+  ============================== -->
+
+  <div
+    class="mobile-menu"
+    id="mobileMenu"
+  >
+
+
+    <a
+      href="members.html"
+      data-i18n="people"
+    >
+      👤 人员
+    </a>
+
+
+    <a
+      href="exchange.html"
+      data-i18n="exchange"
+    >
+      💱 换汇
+    </a>
+
+
+    <a
+      href="games.html"
+      data-i18n="games"
+    >
+      🎮 游戏
+    </a>
+
+
+    <a
+      href="social.html"
+      data-i18n="social"
+    >
+      💬 社交软件
+    </a>
+
+
+    <a
+      href="other.html"
+      data-i18n="other"
+    >
+      ✦ 其他
+    </a>
+
+
+    <!-- MOBILE LANGUAGE -->
+
+    <div class="mobile-language">
+
+      <button
+        id="mobileZhButton"
+        onclick="setLanguage('zh')"
+      >
+        中文
+      </button>
+
+      <button
+        id="mobileEnButton"
+        onclick="setLanguage('en')"
+      >
+        English
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==============================
+       MAIN
+  ============================== -->
+
+  <main>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+
+        <div
+          class="hero-tag"
+          data-i18n="heroTag"
+        >
+          欢迎来到誓言业务平台
+        </div>
+
+
+        <h1
+          data-i18n-html="heroTitle"
+        >
+          誓言业务，
+          <br>
+          <span>满足您的所有幻想。</span>
+        </h1>
+
+
+        <p
+          data-i18n="heroDescription"
+        >
+          换汇、游戏、社交软件与其他，
+          一个快速满足您所有要求的平台。
+        </p>
+
+
+        <a
+          href="#features"
+          class="primary-button"
+          data-i18n="start"
+        >
+          开始探索 →
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section
+      class="features"
+      id="features"
+    >
+
+
+      <div class="section-title">
+
+        <h2
+          data-i18n="businessTitle"
+        >
+          业务介绍
+        </h2>
+
+        <p
+          data-i18n="businessSubtitle"
+        >
+          选择您想了解的业务
+        </p>
+
+      </div>
+
+
+      <div class="feature-grid">
+
+
+        <!-- PEOPLE -->
+
+        <a
+          href="members.html"
+          class="feature-card"
+        >
+
+          <div class="feature-icon">
+            👤
+          </div>
+
+          <h3 data-i18n="people">
+            人员
+          </h3>
+
+          <p data-i18n="peopleDescription">
+            查看誓言业务平台工作人员与负责范围。
+          </p>
+
+          <span
+            class="card-link"
+            data-i18n="viewPeople"
+          >
+            查看人员 →
+          </span>
+
+        </a>
+
+
+        <!-- EXCHANGE -->
+
+        <a
+          href="exchange.html"
+          class="feature-card"
+          id="exchange"
+        >
+
+          <div class="feature-icon">
+            💱
+          </div>
+
+          <h3 data-i18n="exchange">
+            换汇
+          </h3>
+
+          <p data-i18n="exchangeDescription">
+            查看不同货币之间的汇率，
+            方便进行货币转换。
+          </p>
+
+          <span
+            class="card-link"
+            data-i18n="viewExchange"
+          >
+            查看换汇 →
+          </span>
+
+        </a>
+
+
+        <!-- GAMES -->
+
+        <a
+          href="games.html"
+          class="feature-card"
+          id="games"
+        >
+
+          <div class="feature-icon">
+            🎮
+          </div>
+
+          <h3 data-i18n="games">
+            游戏
+          </h3>
+
+          <p data-i18n="gamesDescription">
+            查看第五人格代充，代送，账号估价，
+            洗号，代挂，代蹲，陪玩，代打等业务。
+          </p>
+
+          <span
+            class="card-link"
+            data-i18n="viewGames"
+          >
+            查看业务 →
+          </span>
+
+        </a>
+
+
+        <!-- SOCIAL -->
+
+        <a
+          href="social.html"
+          class="feature-card"
+          id="social"
+        >
+
+          <div class="feature-icon">
+            💬
+          </div>
+
+          <h3 data-i18n="social">
+            社交软件
+          </h3>
+
+          <p data-i18n="socialDescription">
+            查看 Discord，QQ，微博，
+            爱奇艺等代送业务。
+          </p>
+
+          <span
+            class="card-link"
+            data-i18n="viewSocial"
+          >
+            查看业务 →
+          </span>
+
+        </a>
+
+
+        <!-- OTHER -->
+
+        <a
+          href="other.html"
+          class="feature-card"
+          id="other"
+        >
+
+          <div class="feature-icon">
+            ✦
+          </div>
+
+          <h3 data-i18n="other">
+            其他
+          </h3>
+
+          <p data-i18n="otherDescription">
+            六爻，美化，Discord bot, 网站制作，同人文定制，板写，产孝女，三恋，语C。
+          </p>
+
+          <span
+            class="card-link"
+            data-i18n="viewOther"
+          >
+            查看其他 →
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         DISCORD SHOWCASE
+    ============================== -->
+
+    <section class="showcase">
+
+      <div class="showcase-container">
+
+
+        <div>
+
+          <h2
+            data-i18n-html="discordTitle"
+          >
+            Discord
+            <br>
+            <span>服务器.</span>
+          </h2>
+
+
+          <p
+            data-i18n="discordDescription"
+          >
+            我们主要在 Discord 里发展，
+            欢迎加入我们的服务器。
+          </p>
+
+
+          <a
+            href="https://discord.gg/FDsSujZq2T"
+            class="showcase-button"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="join"
+          >
+            加入
+          </a>
+
+        </div>
+
+
+        <div class="visual">
+
+          <div class="visual-inner">
+            ✦
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         CTA
+    ============================== -->
+
+    <section class="cta">
+
+
+      <h2 data-i18n="ctaTitle">
+        誓言业务平台
+      </h2>
+
+
+      <p data-i18n="ctaDescription">
+        简单介绍
+      </p>
+
+
+      <a
+        href="#home"
+        class="primary-button"
+        data-i18n="backHome"
+      >
+        回到主页 ↑
+      </a>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+
+  <footer>
+
+
+    <div class="footer-logo">
+
+      <img
+        src="STYX.png"
+        alt="STYX"
+      >
+
+    </div>
+
+
+    <div data-i18n="copyright">
+      © 2026 誓言业务平台
+    </div>
+
+
+  </footer>
+
+
+  <!-- ==============================
+       JAVASCRIPT
+  ============================== -->
+
+  <script>
+
+    /* =================================
+       LANGUAGE DATA
+    ================================= */
+
+    const translations = {
+
+      /* ===============================
+         CHINESE
+      =============================== */
+
+      zh: {
+
+        pageTitle:
+          "誓言业务区",
+
+        people:
+          "人员",
+
+        exchange:
+          "换汇",
+
+        games:
+          "游戏",
+
+        social:
+          "社交软件",
+
+        other:
+          "其他",
+
+        heroTag:
+          "欢迎来到誓言业务平台",
+
+        heroTitle:
+          '誓言业务，<br><span>满足您的所有幻想。</span>',
+
+        heroDescription:
+          "换汇、游戏、社交软件与其他，一个快速满足您所有要求的平台。",
+
+        start:
+          "开始探索 →",
+
+        businessTitle:
+          "业务介绍",
+
+        businessSubtitle:
+          "选择您想了解的业务",
+
+        peopleDescription:
+          "查看誓言业务平台工作人员与负责范围。",
+
+        exchangeDescription:
+          "查看不同货币之间的汇率，方便进行货币转换。",
+
+        gamesDescription:
+          "查看第五人格代充，代送，账号估价，洗号，换端，代挂，代蹲，陪玩，代打等业务。",
+
+        socialDescription:
+          "查看 Discord，QQ，微博，爱奇艺等代送业务。",
+
+        otherDescription:
+          "六爻，同人文定制，Discord bot，网站制作，板写，产孝女，三恋，语C。",
+
+        viewPeople:
+          "查看人员 →",
+
+        viewExchange:
+          "查看换汇 →",
+
+        viewGames:
+          "查看业务 →",
+
+        viewSocial:
+          "查看业务 →",
+
+        viewOther:
+          "查看其他 →",
+
+        discordTitle:
+          'Discord<br><span>服务器.</span>',
+
+        discordDescription:
+          "我们主要在 Discord 里发展，欢迎加入我们的服务器。",
+
+        join:
+          "加入",
+
+        ctaTitle:
+          "誓言业务平台",
+
+        ctaDescription:
+          "简单介绍",
+
+        backHome:
+          "回到主页 ↑",
+
+        copyright:
+          "© 2026 誓言业务平台"
+
+      },
+
+
+      /* ===============================
+         ENGLISH
+      =============================== */
+
+      en: {
+
+        pageTitle:
+          "STYX Trading Center",
+
+        people:
+          "People",
+
+        exchange:
+          "Exchange",
+
+        games:
+          "Games",
+
+        social:
+          "Social",
+
+        other:
+          "Other",
+
+        heroTag:
+          "Welcome to STYX Trading Center",
+
+        heroTitle:
+          'STYX TC,<br><span>Everything You Need.</span>',
+
+        heroDescription:
+          "Exchange, gaming, social media services, and other services, all in one convenient platform.",
+
+        start:
+          "Explore Now →",
+
+        businessTitle:
+          "Our Services",
+
+        businessSubtitle:
+          "Choose a service you want to explore",
+
+        peopleDescription:
+          "View our team members and their areas of responsibility.",
+
+        exchangeDescription:
+          "Check exchange rates and easily convert between different currencies.",
+
+        gamesDescription:
+          "Identity V top-up, gifting, account evaluation, rebind, transfer, finding account seller and buyers, game companion, and game boosting services.",
+
+        socialDescription:
+          "VIP gifting services for Discord, QQ, Weibo, iQIYI, and other social platforms.",
+
+        otherDescription:
+          "Ching divination, image creation，Discord bot, website, custom fanfiction, board writing (Chinese only),  custom creator services (Chinese only), Virtual/Toxic/Tragic Romance (Chinese only), Text Based Roleplay (Chinese only).",
+
+        viewPeople:
+          "View People →",
+
+        viewExchange:
+          "View Exchange →",
+
+        viewGames:
+          "View Services →",
+
+        viewSocial:
+          "View Services →",
+
+        viewOther:
+          "View Other →",
+
+        discordTitle:
+          'Discord<br><span>Server.</span>',
+
+        discordDescription:
+          "We mainly operate through Discord. Welcome to join our server.",
+
+        join:
+          "Join",
+
+        ctaTitle:
+          "STYX Trading Center",
+
+        ctaDescription:
+          "Simple introduction",
+
+        backHome:
+          "Back Home ↑",
+
+        copyright:
+          "© 2026 STYX Trading Center"
+
+      }
+
+    };
+
+
+    /* =================================
+       SET LANGUAGE
+    ================================= */
+
+    function setLanguage(language) {
+
+      if (!translations[language]) {
+        language = "zh";
+      }
+
+
+      /* ===============================
+         保存语言
+         其他页面也使用这个值
+      =============================== */
+
+      localStorage.setItem(
+        "shiyue-language",
+        language
+      );
+
+
+      /* ===============================
+         HTML LANG
+      =============================== */
+
+      document.documentElement.lang =
+        language === "zh"
+          ? "zh-CN"
+          : "en";
+
+
+      /* ===============================
+         PAGE TITLE
+      =============================== */
+
+      document.title =
+        translations[language].pageTitle;
+
+
+      /* ===============================
+         普通文字
+      =============================== */
+
+      document
+        .querySelectorAll("[data-i18n]")
+        .forEach(function(element) {
+
+          const key =
+            element.getAttribute(
+              "data-i18n"
+            );
+
+          if (
+            translations[language][key]
+          ) {
+
+            element.textContent =
+              translations[language][key];
+
+          }
+
+        });
+
+
+      /* ===============================
+         HTML 文字
+      =============================== */
+
+      document
+        .querySelectorAll("[data-i18n-html]")
+        .forEach(function(element) {
+
+          const key =
+            element.getAttribute(
+              "data-i18n-html"
+            );
+
+          if (
+            translations[language][key]
+          ) {
+
+            element.innerHTML =
+              translations[language][key];
+
+          }
+
+        });
+
+
+      /* ===============================
+         DESKTOP BUTTON
+      =============================== */
+
+      document
+        .getElementById("zhButton")
+        .classList.toggle(
+          "active",
+          language === "zh"
+        );
+
+      document
+        .getElementById("enButton")
+        .classList.toggle(
+          "active",
+          language === "en"
+        );
+
+
+      /* ===============================
+         MOBILE BUTTON
+      =============================== */
+
+      document
+        .getElementById("mobileZhButton")
+        .classList.toggle(
+          "active",
+          language === "zh"
+        );
+
+      document
+        .getElementById("mobileEnButton")
+        .classList.toggle(
+          "active",
+          language === "en"
+        );
+
+    }
+
+
+    /* =================================
+       LOAD SAVED LANGUAGE
+    ================================= */
+
+    const savedLanguage =
+      localStorage.getItem(
+        "shiyue-language"
+      );
+
+
+    setLanguage(
+      savedLanguage || "zh"
+    );
+
+
+    /* =================================
+       MOBILE MENU
+    ================================= */
+
+    const menuButton =
+      document.getElementById(
+        "menuButton"
+      );
+
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+
+    /* ===============================
+       OPEN / CLOSE
+    =============================== */
+
+    menuButton.addEventListener(
+      "click",
+      function() {
+
+        const active =
+          mobileMenu.classList.toggle(
+            "active"
+          );
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          active
+        );
+
+      }
+    );
+
+
+    /* ===============================
+       CLICK MENU LINK
+    =============================== */
+
+    mobileMenu
+      .querySelectorAll("a")
+      .forEach(function(link) {
+
+        link.addEventListener(
+          "click",
+          function() {
+
+            mobileMenu.classList.remove(
+              "active"
+            );
+
+            menuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* ===============================
+       CLICK OUTSIDE
+    =============================== */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        const insideMenu =
+          mobileMenu.contains(
+            event.target
+          );
+
+        const insideButton =
+          menuButton.contains(
+            event.target
+          );
+
+        if (
+          !insideMenu &&
+          !insideButton
+        ) {
+
+          mobileMenu.classList.remove(
+            "active"
+          );
+
+          menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>
