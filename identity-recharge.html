@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>STYX - 第五人格代充</title>
+
+  <style>
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      background: #f7f8fc;
+      color: #17181c;
+
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+
+    /* =========================================================
+       NAVBAR
+    ========================================================= */
+
+    .navbar {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0 clamp(18px, 6vw, 100px);
+
+      background: rgba(255, 255, 255, 0.88);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom:
+        1px solid rgba(0, 0, 0, 0.06);
+
+      z-index: 9999;
+    }
+
+
+    /* =========================================================
+       LOGO
+    ========================================================= */
+
+    .logo {
+      width: 62px;
+      height: 62px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: auto;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.25s,
+        opacity 0.25s;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: block;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      opacity: 0.85;
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+
+      gap: 3px;
+
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      color: #555;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      transition: 0.25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #635bff;
+      background: #efeeff;
+    }
+
+
+    /* =========================================================
+       LANGUAGE SWITCHER
+    ========================================================= */
+
+    .language-switcher {
+      display: flex;
+      align-items: center;
+
+      padding: 4px;
+
+      margin-left: 8px;
+
+      border-radius: 12px;
+
+      background: #f1f1f5;
+    }
+
+    .language-switcher button {
+      border: none;
+
+      padding: 7px 10px;
+
+      border-radius: 9px;
+
+      background: transparent;
+
+      color: #777;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.25s;
+    }
+
+    .language-switcher button:hover {
+      color: #635bff;
+    }
+
+    .language-switcher button.active {
+      background: white;
+
+      color: #635bff;
+
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================================
+       MOBILE BUTTON
+    ========================================================= */
+
+    .menu-button {
+      display: none;
+
+      width: 42px;
+      height: 42px;
+
+      border: none;
+      border-radius: 12px;
+
+      background: #f1f1f5;
+
+      cursor: pointer;
+
+      font-size: 22px;
+
+      color: #222;
+    }
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    .mobile-menu {
+      display: none;
+
+      position: fixed;
+
+      top: 65px;
+      left: 0;
+
+      width: 100%;
+
+      padding: 15px 20px 20px;
+
+      background: rgba(255, 255, 255, 0.97);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid #eee;
+
+      z-index: 9998;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+
+      padding: 14px 15px;
+
+      margin-bottom: 5px;
+
+      border-radius: 12px;
+
+      color: #333;
+
+      font-weight: 500;
+
+      transition: 0.2s;
+    }
+
+    .mobile-menu a:hover,
+    .mobile-menu a.active {
+      background: #f1f0ff;
+      color: #635bff;
+    }
+
+
+    /* =========================================================
+       MOBILE LANGUAGE
+    ========================================================= */
+
+    .mobile-language {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-top: 12px;
+
+      padding-top: 12px;
+
+      border-top: 1px solid #eee;
+    }
+
+    .mobile-language button {
+      flex: 1;
+
+      padding: 11px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      background: #f3f3f6;
+
+      color: #777;
+
+      cursor: pointer;
+
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .mobile-language button.active {
+      background: #ebeaff;
+      color: #635bff;
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+      width: 100%;
+
+      min-height: 52vh;
+
+      padding:
+        145px
+        clamp(20px, 7vw, 100px)
+        80px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      background:
+
+        radial-gradient(
+          circle at 15% 25%,
+          rgba(99, 91, 255, 0.16),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at 85% 70%,
+          rgba(0, 200, 255, 0.13),
+          transparent 30%
+        ),
+
+        #f7f8fc;
+    }
+
+    .hero-content {
+      width: 100%;
+      max-width: 900px;
+    }
+
+
+    /* =========================================================
+       HERO TAG
+    ========================================================= */
+
+    .hero-tag {
+      display: inline-block;
+
+      padding: 7px 15px;
+
+      margin-bottom: 25px;
+
+      border-radius: 50px;
+
+      background: #ebeaff;
+
+      color: #635bff;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+
+    /* =========================================================
+       HERO TITLE
+    ========================================================= */
+
+    .hero h1 {
+      font-size:
+        clamp(48px, 7vw, 82px);
+
+      line-height: 1.02;
+
+      letter-spacing:
+        clamp(-4px, -0.3vw, -1px);
+
+      margin-bottom: 25px;
+    }
+
+    .hero h1 span {
+      color: #635bff;
+    }
+
+    .hero-description {
+      width: 100%;
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      color: #6d6d75;
+
+      font-size:
+        clamp(16px, 2vw, 19px);
+
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       RECHARGE SECTION
+    ========================================================= */
+
+    .recharge-section {
+      width: 100%;
+
+      padding:
+        90px
+        clamp(20px, 7vw, 100px)
+        120px;
+
+      background: white;
+    }
+
+    .recharge-container {
+      width: 100%;
+      max-width: 1150px;
+
+      margin: auto;
+    }
+
+
+    /* =========================================================
+       SECTION TITLE
+    ========================================================= */
+
+    .section-title {
+      width: 100%;
+      max-width: 720px;
+
+      margin: 0 auto 50px;
+
+      text-align: center;
+    }
+
+    .section-title h2 {
+      font-size:
+        clamp(34px, 5vw, 52px);
+
+      line-height: 1.1;
+
+      letter-spacing: -2px;
+
+      margin-bottom: 14px;
+    }
+
+    .section-title p {
+      color: #777;
+
+      line-height: 1.7;
+
+      font-size: 15px;
+    }
+
+
+    /* =========================================================
+       RECHARGE GRID
+    ========================================================= */
+
+    .recharge-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 20px;
+    }
+
+
+    /* =========================================================
+       RECHARGE CARD
+    ========================================================= */
+
+    .recharge-card {
+      position: relative;
+
+      min-height: 250px;
+
+      padding: 32px;
+
+      display: flex;
+
+      flex-direction: column;
+      justify-content: space-between;
+
+      border-radius: 26px;
+
+      background: #f7f7fa;
+
+      border: 1px solid #ededf2;
+
+      overflow: hidden;
+
+      transition:
+        transform 0.25s,
+        border-color 0.25s,
+        box-shadow 0.25s,
+        background 0.25s;
+    }
+
+    .recharge-card::before {
+      content: "";
+
+      position: absolute;
+
+      width: 190px;
+      height: 190px;
+
+      top: -95px;
+      right: -95px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(99, 91, 255, 0.10);
+
+      transition: 0.3s;
+    }
+
+    .recharge-card:hover {
+      transform: translateY(-7px);
+
+      background: white;
+
+      border-color: #dcd9ff;
+
+      box-shadow:
+        0 25px 55px
+        rgba(0, 0, 0, 0.08);
+    }
+
+    .recharge-card:hover::before {
+      transform: scale(1.4);
+
+      background:
+        rgba(99, 91, 255, 0.15);
+    }
+
+
+    /* =========================================================
+       CARD TOP
+    ========================================================= */
+
+    .card-top {
+      position: relative;
+
+      z-index: 1;
+    }
+
+
+    /* =========================================================
+       CARD ICON
+    ========================================================= */
+
+    .recharge-icon {
+      width: 60px;
+      height: 60px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 25px;
+
+      border-radius: 18px;
+
+      background: #ebeaff;
+
+      color: #635bff;
+
+      font-size: 27px;
+
+      position: relative;
+
+      z-index: 1;
+    }
+
+
+    /* =========================================================
+       CARD TAG
+    ========================================================= */
+
+    .recharge-tag {
+      display: inline-block;
+
+      margin-bottom: 9px;
+
+      color: #8a87a5;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       CARD TITLE
+    ========================================================= */
+
+    .recharge-card h3 {
+      margin-bottom: 9px;
+
+      font-size: 27px;
+
+      letter-spacing: -0.7px;
+    }
+
+    .recharge-card p {
+      color: #777;
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       PRICE
+    ========================================================= */
+
+    .price-area {
+      position: relative;
+
+      z-index: 1;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      margin-top: 28px;
+
+      padding-top: 20px;
+
+      border-top: 1px solid #e8e8ed;
+    }
+
+    .price-label {
+      color: #999;
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+    .price {
+      color: #635bff;
+
+      font-size: 16px;
+
+      font-weight: 700;
+    }
+
+    .price.pending {
+      color: #999;
+
+      font-weight: 500;
+    }
+
+
+    /* =========================================================
+       INFO SECTION
+    ========================================================= */
+
+    .info-section {
+      width: 100%;
+
+      padding:
+        90px
+        clamp(20px, 7vw, 100px)
+        110px;
+
+      background: #f7f8fc;
+    }
+
+    .info-container {
+      width: 100%;
+      max-width: 1000px;
+
+      margin: auto;
+    }
+
+    .info-box {
+      padding: 35px;
+
+      border-radius: 24px;
+
+      background: white;
+
+      border: 1px solid #ededf2;
+
+      box-shadow:
+        0 15px 45px
+        rgba(0, 0, 0, 0.04);
+    }
+
+    .info-box h3 {
+      margin-bottom: 20px;
+
+      font-size: 25px;
+
+      letter-spacing: -0.5px;
+    }
+
+    .info-box p {
+      margin-bottom: 12px;
+
+      color: #777;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+    .info-box p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    /* =========================================================
+       DISCORD SHOWCASE
+    ========================================================= */
+
+    .showcase {
+      width: 100%;
+
+      padding:
+        clamp(80px, 10vw, 130px)
+        clamp(20px, 7vw, 100px);
+
+      background: #111216;
+
+      color: white;
+    }
+
+    .showcase-container {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: auto;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      gap:
+        clamp(40px, 8vw, 100px);
+
+      align-items: center;
+    }
+
+    .showcase h2 {
+      font-size:
+        clamp(40px, 6vw, 65px);
+
+      line-height: 1.05;
+
+      letter-spacing: -3px;
+
+      margin-bottom: 25px;
+    }
+
+    .showcase h2 span {
+      color: #8c85ff;
+    }
+
+    .showcase p {
+      max-width: 520px;
+
+      margin-bottom: 30px;
+
+      color: #aaa;
+
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       DISCORD BUTTON
+    ========================================================= */
+
+    .showcase-button {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 48px;
+
+      padding: 0 22px;
+
+      border-radius: 12px;
+
+      background: white;
+
+      color: #111;
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      transition: 0.25s;
+    }
+
+    .showcase-button:hover {
+      background: #8c85ff;
+
+      color: white;
+
+      transform: translateY(-2px);
+    }
+
+
+    /* =========================================================
+       VISUAL
+    ========================================================= */
+
+    .visual {
+      width: 100%;
+
+      aspect-ratio: 1 / 0.85;
+
+      border-radius: 30px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #635bff,
+          #00c6ff
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(99, 91, 255, 0.25);
+    }
+
+    .visual-inner {
+      width: 70%;
+      height: 70%;
+
+      border-radius: 24px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 12px;
+
+      background:
+        rgba(255, 255, 255, 0.14);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.3);
+
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      text-align: center;
+    }
+
+    .visual-icon {
+      font-size:
+        clamp(50px, 7vw, 75px);
+    }
+
+    .visual-text {
+      font-size: 14px;
+
+      color: rgba(255, 255, 255, 0.85);
+
+      font-weight: 600;
+    }
+
+
+    /* =========================================================
+       CTA
+    ========================================================= */
+
+    .cta {
+      width: 100%;
+
+      padding:
+        clamp(80px, 10vw, 130px)
+        20px;
+
+      text-align: center;
+
+      background: #f7f8fc;
+    }
+
+    .cta h2 {
+      font-size:
+        clamp(36px, 5vw, 55px);
+
+      letter-spacing: -2px;
+
+      margin-bottom: 15px;
+    }
+
+    .cta p {
+      margin-bottom: 30px;
+
+      color: #777;
+    }
+
+    .primary-button {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 50px;
+
+      padding: 0 25px;
+
+      border-radius: 14px;
+
+      background: #17181c;
+
+      color: white;
+
+      font-size: 15px;
+
+      font-weight: 600;
+
+      transition: 0.25s;
+    }
+
+    .primary-button:hover {
+      background: #635bff;
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 15px 35px
+        rgba(99, 91, 255, 0.25);
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer {
+      width: 100%;
+
+      padding:
+        30px
+        clamp(20px, 7vw, 100px);
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      background: white;
+
+      border-top: 1px solid #eee;
+
+      color: #888;
+
+      font-size: 14px;
+    }
+
+    .footer-logo {
+      width: 50px;
+      height: 50px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+    }
+
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media (max-width: 1000px) {
+
+      .nav-links a {
+        padding: 9px 9px;
+        font-size: 13px;
+      }
+
+      .recharge-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 700px) {
+
+      .navbar {
+        height: 65px;
+
+        padding: 0 18px;
+      }
+
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      .nav-right {
+        display: none;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+
+      .hero {
+        min-height: 55vh;
+
+        padding:
+          125px
+          20px
+          70px;
+      }
+
+      .hero h1 {
+        font-size:
+          clamp(44px, 13vw, 65px);
+
+        letter-spacing: -3px;
+      }
+
+
+      .recharge-section {
+        padding:
+          70px
+          20px
+          80px;
+      }
+
+      .recharge-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .recharge-card {
+        min-height: 235px;
+      }
+
+
+      .info-section {
+        padding:
+          70px
+          20px
+          80px;
+      }
+
+      .info-box {
+        padding: 25px;
+      }
+
+
+      .showcase {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .showcase-container {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase h2 {
+        letter-spacing: -2px;
+      }
+
+      .visual {
+        aspect-ratio: 1 / 0.8;
+      }
+
+
+      footer {
+        flex-direction: column;
+
+        gap: 10px;
+
+        text-align: center;
+      }
+
+    }
+
+
+    /* =========================================================
+       SMALL PHONE
+    ========================================================= */
+
+    @media (max-width: 400px) {
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .logo {
+        width: 46px;
+        height: 46px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================================================
+       NAVBAR
+  ========================================================= -->
+
+  <header class="navbar">
+
+    <a
+      href="index.html"
+      class="logo"
+      aria-label="Home"
+    >
+
+      <img
+        src="STYX.png"
+        alt="STYX"
+      >
+
+    </a>
+
+
+    <div class="nav-right">
+
+      <nav>
+
+        <ul class="nav-links">
+
+          <li>
+            <a
+              href="members.html"
+              id="navMembers"
+            >
+              人员
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="exchange.html"
+              id="navExchange"
+            >
+              换汇
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="games.html"
+              class="active"
+              id="navGames"
+            >
+              游戏
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="social.html"
+              id="navSocial"
+            >
+              社交软件
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="other.html"
+              id="navOther"
+            >
+              其他
+            </a>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+      <div class="language-switcher">
+
+        <button
+          id="zhButton"
+          onclick="setLanguage('zh')"
+        >
+          中
+        </button>
+
+        <button
+          id="enButton"
+          onclick="setLanguage('en')"
+        >
+          EN
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+  </header>
+
+
+  <!-- =========================================================
+       MOBILE MENU
+  ========================================================= -->
+
+  <div
+    class="mobile-menu"
+    id="mobileMenu"
+  >
+
+    <a
+      href="members.html"
+      id="mobileMembers"
+    >
+      👤 人员
+    </a>
+
+    <a
+      href="exchange.html"
+      id="mobileExchange"
+    >
+      💱 换汇
+    </a>
+
+    <a
+      href="games.html"
+      class="active"
+      id="mobileGames"
+    >
+      🎮 游戏
+    </a>
+
+    <a
+      href="social.html"
+      id="mobileSocial"
+    >
+      💬 社交软件
+    </a>
+
+    <a
+      href="other.html"
+      id="mobileOther"
+    >
+      ✦ 其他
+    </a>
+
+
+    <div class="mobile-language">
+
+      <button
+        id="mobileZhButton"
+        onclick="setLanguage('zh')"
+      >
+        中文
+      </button>
+
+      <button
+        id="mobileEnButton"
+        onclick="setLanguage('en')"
+      >
+        English
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MAIN
+  ========================================================= -->
+
+  <main>
+
+
+    <!-- =======================================================
+         HERO
+    ======================================================= -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <div
+          class="hero-tag"
+          id="heroTag"
+        >
+          第五人格业务
+        </div>
+
+
+        <h1 id="heroTitle">
+
+          第五人格
+          <br>
+
+          <span>代充服务.</span>
+
+        </h1>
+
+
+        <p
+          class="hero-description"
+          id="heroDescription"
+        >
+          提供第五人格回声充值服务，请根据需要选择对应充值档位。
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         RECHARGE
+    ======================================================= -->
+
+    <section class="recharge-section">
+
+      <div class="recharge-container">
+
+
+        <div class="section-title">
+
+          <h2 id="sectionTitle">
+            回声充值
+          </h2>
+
+          <p id="sectionDescription">
+            以下为目前提供的第五人格回声充值档位，价格暂未确定。
+          </p>
+
+        </div>
+
+
+        <div class="recharge-grid">
+
+
+          <!-- =================================================
+               759
+          ================================================= -->
+
+          <div class="recharge-card">
+
+            <div class="card-top">
+
+              <div class="recharge-icon">
+                💳
+              </div>
+
+              <span class="recharge-tag">
+                IDENTITY V
+              </span>
+
+              <h3>
+                759 <span id="echoText1">回声</span>
+              </h3>
+
+              <p id="description1">
+                第五人格 759 回声充值档位。
+              </p>
+
+            </div>
+
+
+            <div class="price-area">
+
+              <span
+                class="price-label"
+                id="priceLabel1"
+              >
+                当前价格
+              </span>
+
+              <span
+                class="price pending"
+                id="price1"
+              >
+                待定
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               2227
+          ================================================= -->
+
+          <div class="recharge-card">
+
+            <div class="card-top">
+
+              <div class="recharge-icon">
+                💎
+              </div>
+
+              <span class="recharge-tag">
+                IDENTITY V
+              </span>
+
+              <h3>
+                2227 <span id="echoText2">回声</span>
+              </h3>
+
+              <p id="description2">
+                第五人格 2227 回声充值档位。
+              </p>
+
+            </div>
+
+
+            <div class="price-area">
+
+              <span
+                class="price-label"
+                id="priceLabel2"
+              >
+                当前价格
+              </span>
+
+              <span
+                class="price pending"
+                id="price2"
+              >
+                待定
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               3633
+          ================================================= -->
+
+          <div class="recharge-card">
+
+            <div class="card-top">
+
+              <div class="recharge-icon">
+                ⚡
+              </div>
+
+              <span class="recharge-tag">
+                IDENTITY V
+              </span>
+
+              <h3>
+                3633 <span id="echoText3">回声</span>
+              </h3>
+
+              <p id="description3">
+                第五人格 3633 回声充值档位。
+              </p>
+
+            </div>
+
+
+            <div class="price-area">
+
+              <span
+                class="price-label"
+                id="priceLabel3"
+              >
+                当前价格
+              </span>
+
+              <span
+                class="price pending"
+                id="price3"
+              >
+                待定
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               7249
+          ================================================= -->
+
+          <div class="recharge-card">
+
+            <div class="card-top">
+
+              <div class="recharge-icon">
+                👑
+              </div>
+
+              <span class="recharge-tag">
+                IDENTITY V
+              </span>
+
+              <h3>
+                7249 <span id="echoText4">回声</span>
+              </h3>
+
+              <p id="description4">
+                第五人格 7249 回声充值档位。
+              </p>
+
+            </div>
+
+
+            <div class="price-area">
+
+              <span
+                class="price-label"
+                id="priceLabel4"
+              >
+                当前价格
+              </span>
+
+              <span
+                class="price pending"
+                id="price4"
+              >
+                待定
+              </span>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         INFORMATION
+    ======================================================= -->
+
+    <section class="info-section">
+
+      <div class="info-container">
+
+        <div class="info-box">
+
+          <h3 id="infoTitle">
+            充值说明
+          </h3>
+
+          <p id="info1">
+            目前提供 759、2227、3633、7249 回声四个充值档位。
+          </p>
+
+          <p id="info2">
+            当前价格尚未确定，价格确认后会在本页面进行更新。
+          </p>
+
+          <p id="info3">
+            如果你需要充值，请先确认自己需要的回声数量，再进行咨询。
+          </p>
+
+          <p id="info4">
+            如有其他充值需求，也可以通过 Discord 联系人工咨询。
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         DISCORD
+    ======================================================= -->
+
+    <section class="showcase">
+
+      <div class="showcase-container">
+
+
+        <div>
+
+          <h2 id="discordTitle">
+
+            需要充值？
+            <br>
+
+            <span>联系我们.</span>
+
+          </h2>
+
+
+          <p id="discordDescription">
+            如果你已经确定需要的回声充值档位，可以加入我们的 Discord，
+            获取最新价格信息以及人工咨询。
+          </p>
+
+
+          <a
+            href="https://discord.gg/FDsSujZq2T"
+            class="showcase-button"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="discordButton"
+          >
+            加入 Discord
+          </a>
+
+        </div>
+
+
+        <div class="visual">
+
+          <div class="visual-inner">
+
+            <div class="visual-icon">
+              💳
+            </div>
+
+            <div
+              class="visual-text"
+              id="visualText"
+            >
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         CTA
+    ======================================================= -->
+
+    <section class="cta">
+
+      <h2 id="ctaTitle">
+        第五人格代充
+      </h2>
+
+      <p id="ctaDescription">
+        选择你需要的回声充值档位。
+      </p>
+
+      <a
+        href="games.html"
+        class="primary-button"
+        id="backButton"
+      >
+        返回游戏服务 ↑
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       FOOTER
+    ========================================================= -->
+
+  <footer>
+
+    <div class="footer-logo">
+
+      <img
+        src="STYX.png"
+        alt="STYX"
+      >
+
+    </div>
+
+    <div id="footerText">
+      © 2026 誓言业务平台
+    </div>
+
+  </footer>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       LANGUAGE + MOBILE MENU
+    ========================================================= -->
+
+  <script>
+
+    /* =========================================================
+       TRANSLATIONS
+    ========================================================= */
+
+    const translations = {
+
+      zh: {
+
+        navMembers:
+          "人员",
+
+        navExchange:
+          "换汇",
+
+        navGames:
+          "游戏",
+
+        navSocial:
+          "社交软件",
+
+        navOther:
+          "其他",
+
+
+        mobileMembers:
+          "👤 人员",
+
+        mobileExchange:
+          "💱 换汇",
+
+        mobileGames:
+          "🎮 游戏",
+
+        mobileSocial:
+          "💬 社交软件",
+
+        mobileOther:
+          "✦ 其他",
+
+
+        heroTag:
+          "第五人格业务",
+
+        heroTitle:
+          "第五人格<br><span>代充服务.</span>",
+
+        heroDescription:
+          "提供第五人格回声充值服务，请根据需要选择对应充值档位。",
+
+
+        sectionTitle:
+          "回声充值",
+
+        sectionDescription:
+          "以下为目前提供的第五人格回声充值档位，价格暂未确定。",
+
+
+        echo:
+          "回声",
+
+
+        description1:
+          "第五人格 759 回声充值档位。",
+
+        description2:
+          "第五人格 2227 回声充值档位。",
+
+        description3:
+          "第五人格 3633 回声充值档位。",
+
+        description4:
+          "第五人格 7249 回声充值档位。",
+
+
+        priceLabel:
+          "当前价格",
+
+        pending:
+          "待定",
+
+
+        infoTitle:
+          "充值说明",
+
+        info1:
+          "目前提供 759、2227、3633、7249 回声四个充值档位。",
+
+        info2:
+          "当前价格尚未确定，价格确认后会在本页面进行更新。",
+
+        info3:
+          "如果你需要充值，请先确认自己需要的回声数量，再进行咨询。",
+
+        info4:
+          "如有其他充值需求，也可以通过 Discord 联系人工咨询。",
+
+
+        discordTitle:
+          "需要充值？<br><span>联系我们.</span>",
+
+        discordDescription:
+          "如果你已经确定需要的回声充值档位，可以加入我们的 Discord，获取最新价格信息以及人工咨询。",
+
+        discordButton:
+          "加入 Discord",
+
+        ctaTitle:
+          "第五人格代充",
+
+        ctaDescription:
+          "选择你需要的回声充值档位。",
+
+        backButton:
+          "返回游戏服务 ↑",
+
+
+        footer:
+          "© 2026 誓言业务平台"
+
+      },
+
+
+      en: {
+
+        navMembers:
+          "Members",
+
+        navExchange:
+          "Exchange",
+
+        navGames:
+          "Games",
+
+        navSocial:
+          "Social",
+
+        navOther:
+          "Other",
+
+
+        mobileMembers:
+          "👤 Members",
+
+        mobileExchange:
+          "💱 Exchange",
+
+        mobileGames:
+          "🎮 Games",
+
+        mobileSocial:
+          "💬 Social",
+
+        mobileOther:
+          "✦ Other",
+
+
+        heroTag:
+          "Identity V Services",
+
+        heroTitle:
+          "Identity V<br><span>Top-Up Service.</span>",
+
+        heroDescription:
+          "Identity V Echo top-up service. Choose the recharge amount you need.",
+
+
+        sectionTitle:
+          "Echo Top-Up",
+
+        sectionDescription:
+          "The following Echo recharge options are currently available. Prices are not set yet.",
+
+
+        echo:
+          "Echo",
+
+
+        description1:
+          "Identity V 759 Echo recharge option.",
+
+        description2:
+          "Identity V 2227 Echo recharge option.",
+
+        description3:
+          "Identity V 3633 Echo recharge option.",
+
+        description4:
+          "Identity V 7249 Echo recharge option.",
+
+
+        priceLabel:
+          "Current Price",
+
+        pending:
+          "TBD",
+
+
+        infoTitle:
+          "Recharge Information",
+
+        info1:
+          "Four Echo recharge options are currently available: 759, 2227, 3633 and 7249.",
+
+        info2:
+          "Prices have not been finalized yet and will be updated on this page once confirmed.",
+
+        info3:
+          "Please confirm the Echo amount you need before contacting us.",
+
+        info4:
+          "For other recharge requests, you can also contact us through Discord.",
+
+
+        discordTitle:
+          "Need a Top-Up?<br><span>Contact Us.</span>",
+
+        discordDescription:
+          "If you already know which Echo recharge option you need, join our Discord for the latest pricing information and human support.",
+
+        discordButton:
+          "Join Discord",
+
+
+        ctaTitle:
+          "Identity V Top-Up",
+
+        ctaDescription:
+          "Choose the Echo recharge option you need.",
+
+        backButton:
+          "Back to Game Services ↑",
+
+
+        footer:
+          "© 2026 STYX Services"
+
+      }
+
+    };
+
+
+    /* =========================================================
+       CURRENT LANGUAGE
+    ========================================================= */
+
+    let currentLanguage =
+      localStorage.getItem(
+        "shiyue-language"
+      ) || "zh";
+
+
+    /* =========================================================
+       SET LANGUAGE
+    ========================================================= */
+
+    function setLanguage(language) {
+
+      if (!translations[language]) {
+        language = "zh";
+      }
+
+
+      currentLanguage =
+        language;
+
+
+      localStorage.setItem(
+        "shiyue-language",
+        language
+      );
+
+
+      document.documentElement.lang =
+        language === "zh"
+          ? "zh-CN"
+          : "en";
+
+
+      /* =======================================================
+         NAVIGATION
+      ======================================================= */
+
+      document.getElementById(
+        "navMembers"
+      ).textContent =
+        translations[language].navMembers;
+
+
+      document.getElementById(
+        "navExchange"
+      ).textContent =
+        translations[language].navExchange;
+
+
+      document.getElementById(
+        "navGames"
+      ).textContent =
+        translations[language].navGames;
+
+
+      document.getElementById(
+        "navSocial"
+      ).textContent =
+        translations[language].navSocial;
+
+
+      document.getElementById(
+        "navOther"
+      ).textContent =
+        translations[language].navOther;
+
+
+      /* =======================================================
+         MOBILE NAVIGATION
+      ======================================================= */
+
+      document.getElementById(
+        "mobileMembers"
+      ).textContent =
+        translations[language].mobileMembers;
+
+
+      document.getElementById(
+        "mobileExchange"
+      ).textContent =
+        translations[language].mobileExchange;
+
+
+      document.getElementById(
+        "mobileGames"
+      ).textContent =
+        translations[language].mobileGames;
+
+
+      document.getElementById(
+        "mobileSocial"
+      ).textContent =
+        translations[language].mobileSocial;
+
+
+      document.getElementById(
+        "mobileOther"
+      ).textContent =
+        translations[language].mobileOther;
+
+
+      /* =======================================================
+         HERO
+      ======================================================= */
+
+      document.getElementById(
+        "heroTag"
+      ).textContent =
+        translations[language].heroTag;
+
+
+      document.getElementById(
+        "heroTitle"
+      ).innerHTML =
+        translations[language].heroTitle;
+
+
+      document.getElementById(
+        "heroDescription"
+      ).textContent =
+        translations[language].heroDescription;
+
+
+      /* =======================================================
+         SECTION
+      ======================================================= */
+
+      document.getElementById(
+        "sectionTitle"
+      ).textContent =
+        translations[language].sectionTitle;
+
+
+      document.getElementById(
+        "sectionDescription"
+      ).textContent =
+        translations[language].sectionDescription;
+
+
+      /* =======================================================
+         ECHO TEXT
+      ======================================================= */
+
+      document.getElementById(
+        "echoText1"
+      ).textContent =
+        translations[language].echo;
+
+
+      document.getElementById(
+        "echoText2"
+      ).textContent =
+        translations[language].echo;
+
+
+      document.getElementById(
+        "echoText3"
+      ).textContent =
+        translations[language].echo;
+
+
+      document.getElementById(
+        "echoText4"
+      ).textContent =
+        translations[language].echo;
+
+
+      /* =======================================================
+         DESCRIPTIONS
+      ======================================================= */
+
+      document.getElementById(
+        "description1"
+      ).textContent =
+        translations[language].description1;
+
+
+      document.getElementById(
+        "description2"
+      ).textContent =
+        translations[language].description2;
+
+
+      document.getElementById(
+        "description3"
+      ).textContent =
+        translations[language].description3;
+
+
+      document.getElementById(
+        "description4"
+      ).textContent =
+        translations[language].description4;
+
+
+      /* =======================================================
+         PRICES
+      ======================================================= */
+
+      document.getElementById(
+        "priceLabel1"
+      ).textContent =
+        translations[language].priceLabel;
+
+
+      document.getElementById(
+        "priceLabel2"
+      ).textContent =
+        translations[language].priceLabel;
+
+
+      document.getElementById(
+        "priceLabel3"
+      ).textContent =
+        translations[language].priceLabel;
+
+
+      document.getElementById(
+        "priceLabel4"
+      ).textContent =
+        translations[language].priceLabel;
+
+
+      document.getElementById(
+        "price1"
+      ).textContent =
+        translations[language].pending;
+
+
+      document.getElementById(
+        "price2"
+      ).textContent =
+        translations[language].pending;
+
+
+      document.getElementById(
+        "price3"
+      ).textContent =
+        translations[language].pending;
+
+
+      document.getElementById(
+        "price4"
+      ).textContent =
+        translations[language].pending;
+
+
+      /* =======================================================
+         INFORMATION
+      ======================================================= */
+
+      document.getElementById(
+        "infoTitle"
+      ).textContent =
+        translations[language].infoTitle;
+
+
+      document.getElementById(
+        "info1"
+      ).textContent =
+        translations[language].info1;
+
+
+      document.getElementById(
+        "info2"
+      ).textContent =
+        translations[language].info2;
+
+
+      document.getElementById(
+        "info3"
+      ).textContent =
+        translations[language].info3;
+
+
+      document.getElementById(
+        "info4"
+      ).textContent =
+        translations[language].info4;
+
+
+      /* =======================================================
+         DISCORD
+      ======================================================= */
+
+      document.getElementById(
+        "discordTitle"
+      ).innerHTML =
+        translations[language].discordTitle;
+
+
+      document.getElementById(
+        "discordDescription"
+      ).textContent =
+        translations[language].discordDescription;
+
+
+      document.getElementById(
+        "discordButton"
+      ).textContent =
+        translations[language].discordButton;
+
+
+      document.getElementById(
+        "visualText"
+      ).textContent =
+        translations[language].visualText;
+
+
+      /* =======================================================
+         CTA
+      ======================================================= */
+
+      document.getElementById(
+        "ctaTitle"
+      ).textContent =
+        translations[language].ctaTitle;
+
+
+      document.getElementById(
+        "ctaDescription"
+      ).textContent =
+        translations[language].ctaDescription;
+
+
+      document.getElementById(
+        "backButton"
+      ).textContent =
+        translations[language].backButton;
+
+
+      /* =======================================================
+         FOOTER
+      ======================================================= */
+
+      document.getElementById(
+        "footerText"
+      ).textContent =
+        translations[language].footer;
+
+
+      /* =======================================================
+         LANGUAGE BUTTONS
+      ======================================================= */
+
+      document.getElementById(
+        "zhButton"
+      ).classList.toggle(
+        "active",
+        language === "zh"
+      );
+
+
+      document.getElementById(
+        "enButton"
+      ).classList.toggle(
+        "active",
+        language === "en"
+      );
+
+
+      document.getElementById(
+        "mobileZhButton"
+      ).classList.toggle(
+        "active",
+        language === "zh"
+      );
+
+
+      document.getElementById(
+        "mobileEnButton"
+      ).classList.toggle(
+        "active",
+        language === "en"
+      );
+
+    }
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    const menuButton =
+      document.getElementById(
+        "menuButton"
+      );
+
+
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+
+    menuButton.addEventListener(
+      "click",
+      function() {
+
+        const active =
+          mobileMenu.classList.toggle(
+            "active"
+          );
+
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          active
+        );
+
+      }
+    );
+
+
+    /* =========================================================
+       CLOSE MOBILE MENU
+       WHEN LINK IS CLICKED
+    ========================================================= */
+
+    mobileMenu
+      .querySelectorAll("a")
+      .forEach(
+        function(link) {
+
+          link.addEventListener(
+            "click",
+            function() {
+
+              mobileMenu.classList.remove(
+                "active"
+              );
+
+
+              menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    /* =========================================================
+       CLICK OUTSIDE TO CLOSE
+    ========================================================= */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        const insideMenu =
+          mobileMenu.contains(
+            event.target
+          );
+
+
+        const insideButton =
+          menuButton.contains(
+            event.target
+          );
+
+
+        if (
+          !insideMenu &&
+          !insideButton
+        ) {
+
+          mobileMenu.classList.remove(
+            "active"
+          );
+
+
+          menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       INITIALIZE LANGUAGE
+    ========================================================= */
+
+    setLanguage(
+      currentLanguage
+    );
+
+  </script>
+
+</body>
+
+</html>
